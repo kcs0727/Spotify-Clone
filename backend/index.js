@@ -29,6 +29,9 @@ app.use(cors({
 
 app.use("/api/user",userRoutes);
 app.use("/api/song",songRoutes);
+app.get("/",(req,res)=>{
+  res.send("it is working");
+})
 
 
 connectDB().then(() => {
