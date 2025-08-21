@@ -29,7 +29,7 @@ export const registeruser = trycatch(async (req, res) => {
         maxAge: 15* 24 *60 *60 *1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
+        sameSite: "none"
     });
 
     const safeuser= await users.findById(newuser._id).select("-password");
@@ -69,7 +69,7 @@ export const loginuser = trycatch(async (req, res) => {
         maxAge: 15* 24 *60 *60 *1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
+        sameSite: "none"
     });
 
     const safeuser= await users.findById(user._id).select("-password");
@@ -91,7 +91,7 @@ export const logoutuser= trycatch(async(req,res)=>{
         maxAge: 0,
         httpOnly: true, 
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
+        sameSite: "none"
     });
 
     res.status(200).json({
