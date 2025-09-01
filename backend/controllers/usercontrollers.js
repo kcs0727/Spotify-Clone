@@ -65,7 +65,7 @@ export const loginuser = trycatch(async (req, res) => {
         user.verifyToken = verifyToken;
         user.verifyTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
         await user.save();
-        
+
         const verifyLink = `${process.env.FRONTEND_URL}/verify?token=${verifyToken}`;
 
         await sendEmail(
@@ -110,7 +110,7 @@ export const verifyuser = trycatch(async (req, res) => {
             message: "Verification token is missing"
         });
     }
-    
+
     const user = await users.findOne({
         verifyToken: token,
         verifyTokenExpiry: { $gt: Date.now() }
@@ -118,19 +118,13 @@ export const verifyuser = trycatch(async (req, res) => {
 
 
     if (!user) {
-        let verifieduser = await users.findOne({ verified: true, verifyToken:"verified" });
-        if (verifieduser) {
-            verifieduser.verifyToken=undefined;
-            await verifieduser.save();
-            return res.status(200);
-        }
         return res.status(400).json({
             message: "Token Expired or user not found"
         });
     }
 
     user.verified = true;
-    user.verifyToken = "verified";
+    user.verifyToken =undefined;
     user.verifyTokenExpiry = undefined;
     await user.save();
 
@@ -147,8 +141,7 @@ export const myprofile = trycatch(async (req, res) => {
 
 
 export const logoutuser = trycatch(async (req, res) => {
-    res.cookie("token", "", {
-        maxAge: 0,
+    res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "none",
