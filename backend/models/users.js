@@ -15,8 +15,16 @@ const schema = new mongoose.Schema({
     },
     playlist: {
         type: [String], default: []
-    }
-
+    },
+    verified:{
+        type: Boolean, default:false
+    },
+    verifyToken: { 
+        type: String 
+    },
+    verifyTokenExpiry: {
+        type: Date 
+    },
 },
     { timestamps: true })
 

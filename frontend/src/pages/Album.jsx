@@ -43,7 +43,7 @@ export default function Album() {
                     {albumdata.thumbnail ? (
                         <img src={albumdata.thumbnail.url} className='size-40 sm:size-48 rounded' alt="" />
                     ) : (
-                        <img src="https://dummyimage.com/100x100" className='size-40 sm:size-48 rounded' alt="" />
+                        <img src={assets.thumbnail} className='size-40 sm:size-48 rounded' alt="" />
                     )}
 
                     <div className='flex flex-col'>

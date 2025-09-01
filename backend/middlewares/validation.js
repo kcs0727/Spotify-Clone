@@ -4,7 +4,10 @@ export const signupvalidation= (req, res, next)=> {
     const Schema = joi.object({
         name: joi.string().min(4).max(30).required(),
         email: joi.string().email().required(),
-        password: joi.string().min(4).max(20).required()
+        password: joi.string().min(4).max(20).pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]+$/).required()
+            .messages({
+                "string.pattern.base": "Password must contain at least one alphabet, one number and only @,$,!,%,*,?,& allowed"
+            })
     })
 
     const { error } = Schema.validate(req.body);

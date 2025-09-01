@@ -12,20 +12,22 @@ export const UserProvider = ({ children }) => {
     const [user, setuser] = useState({});
     const [isauth, setisauth] = useState(false);
     const [btnloading, setbtnloading] = useState(false);
-    const [loading, setloading] = useState(false);
+    const [loading, setloading] = useState(true);
     const navigate = useNavigate();
 
 
     async function fetchuser() {
-        setloading(true);
         try {
+            setloading(true);
             const { data } = await axios.get("/api/user/me");
             setuser(data);
             setisauth(true);
-            setloading(false);
-        } catch (error) {
+        } 
+        catch (error) {
             setuser({});
             setisauth(false);
+        } 
+        finally{
             setloading(false);
         }
     }
@@ -43,10 +45,8 @@ export const UserProvider = ({ children }) => {
             })
 
             toast.success(data.message);
-            setuser(data.user)
-            setisauth(true);
             setbtnloading(false);
-            navigate("/");
+            navigate("/login");
         }
         catch (err) {
             toast.error(err.response?.data?.message || "Registration failed");
@@ -108,8 +108,20 @@ export const UserProvider = ({ children }) => {
     }
 
 
+    async function verifyuser(token) {
+        try {
+            const { data } = await axios.get(`/api/user/verify?token=${token}`);
+            if(data.message) toast.success(data.message);
+            navigate("/login");
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Verification failed");
+            navigate("/register");
+        }
+    }
+
+
     return (
-        <Usercontext.Provider value={{ registeruser, loginuser, logoutuser, addtoplaylist, user, isauth, btnloading, loading }}>
+        <Usercontext.Provider value={{ registeruser, loginuser, logoutuser, addtoplaylist, verifyuser, user, isauth, btnloading, loading }}>
             {children}
             <Toaster />
         </Usercontext.Provider>

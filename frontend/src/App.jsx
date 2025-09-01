@@ -7,35 +7,40 @@ import Loading from "./components/Loading";
 import Admin from "./pages/Admin";
 import Playlist from "./pages/Playlists";
 import Album from "./pages/Album";
+import Verify from "./pages/Verify";
 import Player from "./components/Player";
 
 
-function App(){
+function App() {
 
-  const {loading, isauth} = UserData();
+  const { loading, isauth } = UserData();
 
-  return(
+  return (
     <div className="h-screen bg-black text-white">
 
-      {loading? <Loading/>:
+      {loading ? <Loading /> :
         <Routes>
 
-          <Route path="/login" element={isauth? <Home/>: <Login/>} />
+          <Route path="/login" element={isauth ? <Navigate to="/" /> : <Login />} />
 
-          <Route path="/register" element={isauth? <Home/>: <Register/>} />
+          <Route path="/register" element={isauth ? <Navigate to="/"/> : <Register />} />
 
-          <Route path="/" element={isauth? <Home/>: <Login/>} />
+          <Route path="/verify" element={<Verify />} />
 
-          <Route path="/playlist" element={isauth? <Playlist/> : <Login/>} />
+          <Route path="/" element={isauth ? <Home /> : <Navigate to="/login" />} />
 
-          <Route path="/album/:id" element={isauth ? <Album/> :<Login />}/>
+          <Route path="/playlist" element={isauth ? <Playlist /> : <Navigate to="/login" />} />
 
-          <Route path="/admin" element={isauth? <Admin/>: <Login/>} />
+          <Route path="/album/:id" element={isauth ? <Album /> : <Navigate to="/login" />} />
+
+          <Route path="/admin" element={isauth ? <Admin /> : <Navigate to="/login" />} />
+
+          <Route path="/*" element={isauth ? <Navigate to="/" /> : <Navigate to="/login" />} />
 
         </Routes>
       }
 
-      {isauth? <Player/>:null}
+      {isauth ? <Player /> : null}
 
     </div>
   )

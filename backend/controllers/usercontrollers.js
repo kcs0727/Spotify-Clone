@@ -2,6 +2,8 @@ import trycatch from "../utils/trycatch.js";
 import users from "../models/users.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
+import sendEmail from "../utils/sendemail.js";
 
 
 export const registeruser = trycatch(async (req, res) => {
@@ -15,27 +17,25 @@ export const registeruser = trycatch(async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const newuser = await users.create({
-        name, email, password: hashed
+    const verifyToken = crypto.randomBytes(32).toString("hex");
+
+    await users.create({
+        name, email, password: hashed,
+        verified: false,
+        verifyToken,
+        verifyTokenExpiry: Date.now() + 24 * 60 * 60 * 1000
     });
 
-    const token = jwt.sign(
-        { id: newuser._id },
-        process.env.JWT_SECRET,
-        { expiresIn: "15d" }
+    const verifyLink = `${process.env.FRONTEND_URL}/verify?token=${verifyToken}`;
+
+    await sendEmail(
+        email,
+        "Verify your account",
+        `Hello ${name}, \nPlease click the link below to verify your account: \n${verifyLink} \nThis link will expire in 24 hours.`
     );
 
-    res.cookie("token",token,{
-        maxAge: 15* 24 *60 *60 *1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none"
-    });
-
-    const safeuser= await users.findById(newuser._id).select("-password");
     res.status(201).json({
-        user: safeuser,
-        message: "User registered successfully"
+        message: "Please check your email to verify your account"
     })
 
 })
@@ -43,7 +43,7 @@ export const registeruser = trycatch(async (req, res) => {
 
 export const loginuser = trycatch(async (req, res) => {
 
-    const {email, password } = req.body;
+    const { email, password } = req.body;
     const user = await users.findOne({ email });
     if (!user) {
         return res.status(400).json({
@@ -53,26 +53,47 @@ export const loginuser = trycatch(async (req, res) => {
 
     const ismatched = await bcrypt.compare(password, user.password);
 
-    if(!ismatched){
+    if (!ismatched) {
         return res.status(403).json({
-            message:"password not matched"
+            message: "password not matched"
         })
+    }
+
+    if (!user.verified) {
+        const verifyToken = crypto.randomBytes(32).toString("hex");
+
+        user.verifyToken = verifyToken;
+        user.verifyTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
+        await user.save();
+        
+        const verifyLink = `${process.env.FRONTEND_URL}/verify?token=${verifyToken}`;
+
+        await sendEmail(
+            email,
+            "Verify your account",
+            `Hello ${user.name}, \nPlease click the link below to verify your account: \n${verifyLink} \nThis link will expire in 24 hours.`
+        );
+
+        return res.status(403).json({
+            message: "User is not veified. Please check your email to verify your account"
+        });
     }
 
     const token = jwt.sign(
         { id: user._id },
         process.env.JWT_SECRET,
-        { expiresIn: "15d" }
+        { expiresIn: "10d" }
     );
 
-    res.cookie("token",token,{
-        maxAge: 15* 24 *60 *60 *1000,
+    res.cookie("token", token, {
+        maxAge: 15 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none"
+        sameSite: "none",
+        path: "/"
     });
 
-    const safeuser= await users.findById(user._id).select("-password");
+    const safeuser = await users.findById(user._id).select("-password");
     res.status(200).json({
         user: safeuser,
         message: "User login successfull"
@@ -81,35 +102,76 @@ export const loginuser = trycatch(async (req, res) => {
 })
 
 
-export const myprofile=trycatch(async(req,res)=>{
+export const verifyuser = trycatch(async (req, res) => {
+    const { token } = req.query;
+
+    if (!token) {
+        return res.status(400).json({
+            message: "Verification token is missing"
+        });
+    }
+    
+    const user = await users.findOne({
+        verifyToken: token,
+        verifyTokenExpiry: { $gt: Date.now() }
+    });
+
+
+    if (!user) {
+        let verifieduser = await users.findOne({ verified: true, verifyToken:"verified" });
+        if (verifieduser) {
+            verifieduser.verifyToken=undefined;
+            await verifieduser.save();
+            return res.status(200);
+        }
+        return res.status(400).json({
+            message: "Token Expired or user not found"
+        });
+    }
+
+    user.verified = true;
+    user.verifyToken = "verified";
+    user.verifyTokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({
+        message: "Email verified successfully. You can login now."
+    });
+
+});
+
+
+export const myprofile = trycatch(async (req, res) => {
     res.status(200).json(req.user)
 })
 
 
-export const logoutuser= trycatch(async(req,res)=>{
-    res.cookie("token","",{
+export const logoutuser = trycatch(async (req, res) => {
+    res.cookie("token", "", {
         maxAge: 0,
-        httpOnly: true, 
+        httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none"
+        sameSite: "none",
+        path: "/"
     });
 
     res.status(200).json({
-        message:"user logout sucessfull"
+        message: "user logout sucessfull"
     })
 })
 
-export const addtoplaylist= trycatch(async(req,res)=>{
-    const user= req.user
 
-    if(user.playlist.includes(req.params.id)){
+export const addtoplaylist = trycatch(async (req, res) => {
+    const user = req.user
 
-        const index= user.playlist.indexOf(req.params.id);
-        user.playlist.splice(index,1);
+    if (user.playlist.includes(req.params.id)) {
+
+        const index = user.playlist.indexOf(req.params.id);
+        user.playlist.splice(index, 1);
         await user.save();
 
         return res.json({
-            updatedplaylist:user.playlist,
+            updatedplaylist: user.playlist,
             message: "Removed from playlist"
         })
     }
@@ -117,7 +179,7 @@ export const addtoplaylist= trycatch(async(req,res)=>{
     user.playlist.push(req.params.id);
     await user.save();
     return res.json({
-        updatedplaylist:user.playlist,
+        updatedplaylist: user.playlist,
         message: "Added to playlist"
     })
 })
