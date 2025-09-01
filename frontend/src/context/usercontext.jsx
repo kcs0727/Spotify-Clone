@@ -111,7 +111,7 @@ export const UserProvider = ({ children }) => {
     async function verifyuser(token) {
         try {
             const { data } = await axios.get(`/api/user/verify?token=${token}`);
-            if(data.message) toast.success(data.message);
+            toast.success(data.message);
             navigate("/login");
         } catch (err) {
             toast.error(err.response?.data?.message || "Verification failed");
