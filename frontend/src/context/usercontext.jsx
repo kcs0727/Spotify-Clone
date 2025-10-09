@@ -22,12 +22,12 @@ export const UserProvider = ({ children }) => {
             const { data } = await axios.get("/api/user/me");
             setuser(data);
             setisauth(true);
-        } 
+        }
         catch (error) {
             setuser({});
             setisauth(false);
-        } 
-        finally{
+        }
+        finally {
             setloading(false);
         }
     }
@@ -44,9 +44,10 @@ export const UserProvider = ({ children }) => {
                 name, email, password
             })
 
-            toast.success(data.message);
             setbtnloading(false);
-            navigate("/login");
+            navigate("/verify-notice", {
+                state: { message: data.message },
+            });
         }
         catch (err) {
             toast.error(err.response?.data?.message || "Registration failed");
@@ -69,7 +70,13 @@ export const UserProvider = ({ children }) => {
             navigate("/");
         }
         catch (err) {
-            toast.error(err.response?.data?.message || "Login failed");
+            const msg = err.response?.data?.message;
+            if (msg?.toLowerCase().includes("not verified") || msg?.toLowerCase().includes("check your email")) {
+                navigate("/verify-notice", {
+                    state: {message: msg},
+                });
+            }
+            else toast.error(msg || "Login failed");
             setbtnloading(false);
         }
     }
@@ -112,10 +119,12 @@ export const UserProvider = ({ children }) => {
         try {
             const { data } = await axios.get(`/api/user/verify?token=${token}`);
             toast.success(data.message);
-            navigate("/login");
+            setuser(data.user);
+            setisauth(true);
+            navigate("/");
         } catch (err) {
             toast.error(err.response?.data?.message || "Verification failed");
-            navigate("/register");
+            navigate("/login");
         }
     }
 

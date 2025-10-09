@@ -28,11 +28,7 @@ export const registeruser = trycatch(async (req, res) => {
 
     const verifyLink = `${process.env.FRONTEND_URL}/verify?token=${verifyToken}`;
 
-    await sendEmail(
-        email,
-        "Verify your account",
-        `Hello ${name}, \nPlease click the link below to verify your account: \n${verifyLink} \nThis link will expire in 24 hours.`
-    );
+    await sendEmail(email, name, verifyLink);
 
     res.status(201).json({
         message: "Please check your email to verify your account"
@@ -68,14 +64,10 @@ export const loginuser = trycatch(async (req, res) => {
 
         const verifyLink = `${process.env.FRONTEND_URL}/verify?token=${verifyToken}`;
 
-        await sendEmail(
-            email,
-            "Verify your account",
-            `Hello ${user.name}, \nPlease click the link below to verify your account: \n${verifyLink} \nThis link will expire in 24 hours.`
-        );
+        await sendEmail(email, user.name, verifyLink);
 
         return res.status(403).json({
-            message: "User is not veified. Please check your email to verify your account"
+            message: "User is not verified. Please check your email to verify your account"
         });
     }
 
@@ -86,10 +78,10 @@ export const loginuser = trycatch(async (req, res) => {
     );
 
     res.cookie("token", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000,
+        maxAge: 10 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         path: "/"
     });
 
@@ -115,8 +107,6 @@ export const verifyuser = trycatch(async (req, res) => {
         verifyToken: token,
         verifyTokenExpiry: { $gt: Date.now() }
     });
-
-
     if (!user) {
         return res.status(400).json({
             message: "Token Expired or user not found"
@@ -128,9 +118,26 @@ export const verifyuser = trycatch(async (req, res) => {
     user.verifyTokenExpiry = undefined;
     await user.save();
 
-    res.status(200).json({
-        message: "Email verified successfully. You can login now."
+
+    const Token = jwt.sign(
+        { id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "10d" }
+    );
+
+    res.cookie("token", Token, {
+        maxAge: 10 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/"
     });
+
+    const safeuser = await users.findById(user._id).select("-password");
+    res.status(200).json({
+        user: safeuser,
+        message: "Verification successfull"
+    })
 
 });
 
@@ -144,7 +151,7 @@ export const logoutuser = trycatch(async (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         path: "/"
     });
 

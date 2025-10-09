@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from '../components/Layout'
 import { SongData } from '../context/songcontext'
 import Albumitem from '../components/Albumitem';
 import Songitem from '../components/Songitem';
@@ -9,7 +8,6 @@ export default function Home() {
   const {songs,albums}= SongData();
 
   return (
-    <Layout>
       <div>
         <h1 className='text-2xl font-bold my-5'>Featured Charts</h1>
         <div className='flex overflow-auto'>
@@ -30,7 +28,6 @@ export default function Home() {
         </div>
 
       </div>
-    </Layout>
   )
 }
 

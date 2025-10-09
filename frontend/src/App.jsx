@@ -9,6 +9,9 @@ import Playlist from "./pages/Playlists";
 import Album from "./pages/Album";
 import Verify from "./pages/Verify";
 import Player from "./components/Player";
+import Layout from "./pages/Layout";
+import Soon from "./pages/Soon";
+import VerifyNotice from "./pages/VerifyNotice";
 
 
 function App() {
@@ -25,17 +28,33 @@ function App() {
 
           <Route path="/register" element={isauth ? <Navigate to="/"/> : <Register />} />
 
+          <Route path="/verify-notice" element={<VerifyNotice />} />
+
           <Route path="/verify" element={<Verify />} />
-
-          <Route path="/" element={isauth ? <Home /> : <Navigate to="/login" />} />
-
-          <Route path="/playlist" element={isauth ? <Playlist /> : <Navigate to="/login" />} />
-
-          <Route path="/album/:id" element={isauth ? <Album /> : <Navigate to="/login" />} />
 
           <Route path="/admin" element={isauth ? <Admin /> : <Navigate to="/login" />} />
 
+
+          <Route path="/" element={isauth ? <Layout /> : <Navigate to="/login" />} >
+
+            <Route index element={<Home />} />
+
+            <Route path="playlist" element={<Playlist />} />
+
+            <Route path="album/:id" element={<Album />} />
+            
+            <Route path="music" element={<Soon />} />
+            
+            <Route path="podcast" element={<Soon />} />
+
+            <Route path="premium" element={<Soon />} />
+
+            <Route path="installapp" element={<Soon />} />
+
+          </Route>
+
           <Route path="/*" element={isauth ? <Navigate to="/" /> : <Navigate to="/login" />} />
+          
 
         </Routes>
       }

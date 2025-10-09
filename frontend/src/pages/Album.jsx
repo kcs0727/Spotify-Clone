@@ -1,5 +1,4 @@
 import React from 'react'
-import Layout from '../components/Layout'
 import { SongData } from '../context/songcontext'
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -36,7 +35,7 @@ export default function Album() {
 
 
     return (
-        <Layout>
+        <div>
             {albumdata &&
                 <div className='mt-10 flex flex-col gap-5 md:gap-8 sm:flex-row items-center'>
 
@@ -88,6 +87,6 @@ export default function Album() {
 
                 </div>
             ))}
-        </Layout>
+        </div>
     )
 }

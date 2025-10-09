@@ -3,7 +3,6 @@ import { UserData } from '../context/usercontext'
 import { SongData } from '../context/songcontext';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import Layout from '../components/Layout';
 import { assets } from '../assets/assets';
 import { FaBookmark, FaPause, FaPlay } from 'react-icons/fa';
 
@@ -42,7 +41,7 @@ export default function Playlist() {
 
 
   return (
-    <Layout>
+    <div>
       <div className='mt-10 flex flex-col gap-5 md:gap-8 sm:flex-row items-center'>
 
         {myplaylist && myplaylist[0] ? (
@@ -93,6 +92,6 @@ export default function Playlist() {
 
         </div>
       ))}
-    </Layout>
+    </div>
   )
 }
