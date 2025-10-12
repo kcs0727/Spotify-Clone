@@ -3,19 +3,12 @@ import nodemailer from "nodemailer";
 const sendEmail = async (to, name, verifyLink) => {
     try {
         const transporter = nodemailer.createTransport({
-            host: process.env.HOST,
-            port: Number(process.env.EMAIL_PORT),
-            secure: Boolean(process.env.SECURE),
+            service: "gmail",
             auth: {
                 user: process.env.USER,
                 pass: process.env.PASS,
             },
-            // tls: {
-            //     ciphers: "SSLv3",
-            //     rejectUnauthorized: false,
-            // },
         });
-
 
         await transporter.sendMail({
             from: `"Spotify Clone 🎵" <${process.env.SENDER_EMAIL}>`,
