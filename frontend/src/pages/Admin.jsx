@@ -64,13 +64,13 @@ export default function Admin() {
 
 
     return (
-        <div className='h-[90vh] bg-[#212121] p-8 overflow-auto'>
+        <div className='h-[90vh] bg-[#212121] p-4 sm:p-8 overflow-auto'>
 
             <div className='flex justify-end'>
                 <Link to="/" className='bg-green-600 hover:bg-green-800 font-bold p-2 rounded-md'>Go to Home Page</Link>
             </div>
 
-            <h2 className='text-2xl font-bold my-6'>Add Album :</h2>
+            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6'>Add Album :</h2>
 
             <form onSubmit={addAlbumHandler} className='bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col gap-6'>
 
@@ -101,7 +101,7 @@ export default function Admin() {
 
             </form>
 
-            <h2 className='text-2xl font-bold my-6'>Add Song:</h2>
+            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6'>Add Song:</h2>
 
             <form onSubmit={addSongHandler} className='bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col gap-6'>
 
@@ -161,8 +161,8 @@ export default function Admin() {
             </form>
 
 
-            <div className='mt-8'>
-                <h2 className='text-2xl font-bold mb-6'>Added Songs</h2>
+            <div className='mt-4 sm:mt-8'>
+                <h2 className='text-lg sm:text-2xl font-bold mb-3 sm:mb-6'>Added Songs</h2>
 
                 <div className='flex justify-center md:justify-start gap-1 sm:gap-2 items-center flex-wrap'>
                     {
@@ -171,9 +171,9 @@ export default function Admin() {
                                 
                                 <img src={song.thumbnail.url} alt="" className='size-32 sm:size-52' />
                                
-                                <h4 className='text-lg font-bold max-sm:w-32 truncate text-center'>{song.title}</h4>
-                                <h3 className='text-md font-semibold max-sm:w-32 truncate text-center'>{song.singer}</h3>
-                                <h3 className='text-md font-semibold truncate w-32 sm:w-50 text-center'>{song.description}</h3>
+                                <h4 className='text-md sm:text-lg font-semibold sm:font-bold max-sm:w-32 truncate text-center'>{song.title}</h4>
+                                <h3 className='text-sm sm:text-md sm:font-semibold max-sm:w-32 truncate text-center'>{song.singer}</h3>
+                                <h3 className='text-sm sm:text-md sm:font-semibold truncate w-32 sm:w-50 text-center'>{song.description}</h3>
                                 <button onClick={() => deleteSongHandler(song._id)} className='px-1 mt-1 text-red-500 hover:bg-red-200 rounded flex items-center cursor-pointer'>
                                     Delete <MdDelete />
                                 </button>

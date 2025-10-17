@@ -11,6 +11,7 @@ export default function Player() {
     const [volume, setvolume] = useState(1);
     const [progress, setprogress] = useState(0);
     const [duration, setduration] = useState(0);
+    const [showTooltip, setShowTooltip] = useState(false);
     const audioref = useRef(null);
 
 
@@ -24,24 +25,31 @@ export default function Player() {
 
         const handleloadmetadata = () => setduration(audio.duration);
         const handletimeupdate = () => setprogress(audio.currentTime);
+        const handleEnded = () => {
+            nextmusic();         
+            setisplaying(true);       
+        };
+
 
         audio.addEventListener("loadedmetadata", handleloadmetadata);
         audio.addEventListener("timeupdate", handletimeupdate);
+        audio.addEventListener("ended", handleEnded);
 
         return () => {
             audio.removeEventListener("loadedmetadata", handleloadmetadata);
             audio.removeEventListener("timeupdate", handletimeupdate);
+            audio.removeEventListener("ended", handleEnded);
         }
     }, [song])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const audio = audioref.current;
         if (!audio) return;
 
         if (isplaying) audioref.current.play();
         else audioref.current.pause();
-    },[isplaying])
+    }, [isplaying])
 
 
     const handlePlayPause = () => {
@@ -57,6 +65,7 @@ export default function Player() {
     }
 
     const handleVolumeChange = (e) => {
+        setShowTooltip(true);
         const newvolume = e.target.value;
         setvolume(newvolume);
         audioref.current.volume = newvolume;
@@ -72,9 +81,9 @@ export default function Player() {
 
 
     return (
-        <div className='h-[10vh] bg-black'>
+        <div className='h-[10dvh] bg-black flex items-centre'>
             {song && (
-                <div className='flex justify-between items-center text-white px-4'>
+                <div className='w-full flex justify-between items-center text-white px-4 py-auto'>
 
                     {/* song */}
                     <div className='flex items-center gap-3 md:w-[200px]'>
@@ -90,7 +99,7 @@ export default function Player() {
                         {song.audio && (
                             <>
                                 {isplaying ?
-                                    (<audio ref={audioref} src={song.audio.url} autoPlay loop />)
+                                    (<audio ref={audioref} src={song.audio.url} autoPlay />)
                                     : (<audio ref={audioref} src={song.audio.url} />)
                                 }
                             </>
@@ -98,11 +107,11 @@ export default function Player() {
 
                         <div className='w-full flex items-center gap-1 font-thin'>
 
-                            <span className="text-xs px-2 py-1 rounded"> {formatTime(progress)} </span>
+                            <span className="text-xs p-1 sm:px-2 rounded"> {formatTime(progress)} </span>
 
                             <input type="range" min={"0"} max={"100"} className='w-[120px] sm:w-[200px] md:w-[300px] p-0 m-0 cursor-pointer' value={duration ? (progress / duration) * 100 : 0} onChange={handleProgressChange} aria-label="Seek" />
 
-                            <span className="text-xs px-2 py-1 rounded"> {formatTime(duration)} </span>
+                            <span className="text-xs p-1 sm:px-2 rounded"> {formatTime(duration)} </span>
 
                         </div>
 
@@ -119,14 +128,14 @@ export default function Player() {
                     <div className='flex items-center gap-2 relative group'>
 
                         <span>{
-                            volume==0?<FaVolumeMute/>: volume<0.5? <FaVolumeDown/>: <FaVolumeUp/>
+                            volume == 0 ? <FaVolumeMute /> : volume < 0.5 ? <FaVolumeDown /> : <FaVolumeUp />
                         }</span>
 
-                        <input type="range" className='w-16 md:w-32 p-0 m-0 cursor-pointer' min={"0"} max={"1"} step={"0.01"} onChange={handleVolumeChange} value={volume} aria-label="Volume" />
+                        <input type="range" className='[writing-mode:vertical-lr] sm:[writing-mode:horizontal-tb] [direction:rtl] sm:[direction:ltr] w-1 sm:w-16 md:w-32 h-15 sm:h-auto p-0 m-0 cursor-pointer' min={"0"} max={"1"} step={"0.01"} onChange={handleVolumeChange} onTouchEnd={() => setShowTooltip(false)} onMouseUp={() => setShowTooltip(false)} value={volume} aria-label="Volume" />
 
-                        <span className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                        <span className={`absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 transition bg-gray-800 text-white text-xs px-2 py-1 rounded ${showTooltip ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
                             {Math.round(volume * 100)}
-                            </span>
+                        </span>
                     </div>
 
                 </div>

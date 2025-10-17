@@ -11,9 +11,10 @@ export const SongProvider = ({ children }) => {
 
     const { isauth } = UserData();
 
+    const [loading, setloading] = useState(false);
     const [songs, setsongs] = useState([]);
     const [albums, setalbums] = useState([]);
-    const [loading, setloading] = useState(false);
+
     const [selectedsong, setselectedsong] = useState(null);
     const [song, setsong] = useState(null);
     const [isplaying, setisplaying] = useState(false);

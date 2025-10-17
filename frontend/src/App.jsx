@@ -12,6 +12,9 @@ import Player from "./components/Player";
 import Layout from "./pages/Layout";
 import Soon from "./pages/Soon";
 import VerifyNotice from "./pages/VerifyNotice";
+import Music from "./pages/Music";
+import Premium from "./pages/Premium";
+import Search from "./pages/Search";
 
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
   const { loading, isauth } = UserData();
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-[100dvh] bg-black text-white">
 
       {loading ? <Loading /> :
         <Routes>
@@ -43,11 +46,13 @@ function App() {
 
             <Route path="album/:id" element={<Album />} />
             
-            <Route path="music" element={<Soon />} />
+            <Route path="music" element={<Music />} />
+
+            <Route path="search" element={<Search />} />
             
             <Route path="podcast" element={<Soon />} />
 
-            <Route path="premium" element={<Soon />} />
+            <Route path="premium" element={<Premium />} />
 
             <Route path="installapp" element={<Soon />} />
 

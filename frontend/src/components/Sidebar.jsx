@@ -9,7 +9,7 @@ export default function Sidebar() {
     const {user}= UserData();
 
     return (
-        <div className='w-[25%] h-full p-2 hidden lg:flex flex-col gap-2'>
+        <div className='w-[25%] min-w-[240px] h-full p-2 hidden md:flex flex-col gap-2'>
 
             {/* home and search */}
             <div className='bg-[#121212] h-[15%] flex flex-col justify-around rounded '>
@@ -19,7 +19,7 @@ export default function Sidebar() {
                     <p className='font-bold'>Home</p>
                 </NavLink>
 
-                <NavLink to="/" className='flex items-center gap-3 p-2 pl-8 m-1 cursor-pointer rounded-lg hover:bg-[#ffffff14]'>
+                <NavLink to="/search" className='flex items-center gap-3 p-2 pl-8 m-1 cursor-pointer rounded-lg hover:bg-[#ffffff14]'>
                     <img src={assets.search_icon} className='w-6' alt='' />
                     <p className='font-bold'>Search</p>
                 </NavLink>
@@ -57,7 +57,7 @@ export default function Sidebar() {
                 <div className='p-4 m-1 mt-4 shadow-md rounded-lg font-semibold flex flex-col items-start justify-start gap-1'>
                     <h1>Let's find some podcasts to follow</h1>
                     <p className='font-light'>we'll keep you update on new episodes</p>
-                    <NavLink to='/podcast' className='px-4 py-1 bg-[#eee] text-black rounded-2xl mt-4 cursor-pointer hover:bg-white'>Browse Podcasts</NavLink>
+                    <NavLink to='/podcast' className='px-4 py-1 bg-[#eee]/90 text-black rounded-2xl mt-4 cursor-pointer hover:bg-white'>Browse Podcasts</NavLink>
                 </div>
 
                 {/* admin */}
