@@ -23,7 +23,7 @@ export default function Home() {
 
 
   return (
-    <div>
+    <div className='mt-5'>
       <h1 className='text-xl md:text-2xl font-bold my-3 md:my-5'>Featured Charts</h1>
       <div className='flex overflow-auto'>
         {

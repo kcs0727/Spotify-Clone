@@ -67,10 +67,10 @@ export default function Admin() {
         <div className='h-[90vh] bg-[#212121] p-4 sm:p-8 overflow-auto'>
 
             <div className='flex justify-end'>
-                <Link to="/" className='bg-green-600 hover:bg-green-800 font-bold p-2 rounded-md'>Go to Home Page</Link>
+                <Link to="/" className='bg-sky-600 hover:bg-sky-800 font-bold p-2 rounded-md'>Go to Home Page</Link>
             </div>
 
-            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6'>Add Album :</h2>
+            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6 text-sky-100'>Add Album :</h2>
 
             <form onSubmit={addAlbumHandler} className='bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col gap-6'>
 
@@ -96,12 +96,12 @@ export default function Admin() {
                 </div>
 
                 <div>
-                    <button type='submit' disabled={loading} className='w-[100px] bg-green-400 hover:bg-green-600 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{loading ? "Adding.." : "Add"}</button>
+                    <button type='submit' disabled={loading} className='w-[100px] bg-sky-400 hover:bg-sky-600 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{loading ? "Adding.." : "Add"}</button>
                 </div>
 
             </form>
 
-            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6'>Add Song:</h2>
+            <h2 className='text-lg sm:text-2xl font-bold my-3 sm:my-6 text-sky-100'>Add Song:</h2>
 
             <form onSubmit={addSongHandler} className='bg-[#181818] p-6 rounded-lg shadow-lg flex flex-col gap-6'>
 
@@ -155,7 +155,7 @@ export default function Admin() {
                 </div>
 
                 <div>
-                    <button type='submit' disabled={loading} className='w-[100px] bg-green-400 hover:bg-green-600 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{loading ? "Adding.." : "Add"}</button>
+                    <button type='submit' disabled={loading} className='w-[100px] bg-sky-400 hover:bg-sky-600 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{loading ? "Adding.." : "Add"}</button>
                 </div>
 
             </form>

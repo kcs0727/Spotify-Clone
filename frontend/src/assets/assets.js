@@ -22,9 +22,13 @@ import arrow_right from "./right_arrow.png";
 import arrow_left from "./left_arrow.png";
 import spotify_logo from "./spotify_logo.png";
 import clock_icon from "./clock_icon.png";
-import thumbnail from "./thumbnail.jpg"
+import thumbnail from "./thumbnail.jpg";
+import tunehive from "./tunehive.png";
+import tunehive_logo from "./tunehive_logo.png";
 
 export const assets = {
+  tunehive_logo,
+  tunehive,
   thumbnail,
   bell_icon,
   home_icon,

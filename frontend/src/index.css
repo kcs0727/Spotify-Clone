@@ -1,9 +1,40 @@
 @import "tailwindcss";
 
+@keyframes rotate {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.logo{
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.logo::before{
+  content: '';
+  position: absolute;
+  height: 80%;
+  width: 150%;
+  background: linear-gradient(#00ccff,#5b00f9);
+  animation: rotate 3s linear infinite;
+}
+.logo::after{
+  content: '';
+  position: absolute;
+  background-color: #121212;
+  inset: 3px;
+  border-radius: 8px;
+}
+
+
 
 @layer base{
     input{
-        @apply mt-2 w-full rounded-md outline-none px-3 py-1 font-normal border-1 border-gray-700 focus:border-gray-500 
+        @apply mt-2 w-full rounded-md outline-none px-3 py-1 font-normal border-1 border-sky-900/80 focus:border-gray-500 
     }
 }
 

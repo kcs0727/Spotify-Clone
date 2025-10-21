@@ -32,7 +32,7 @@ export default function Album() {
                         <p>Playlist</p>
                         <h2 className='text-xl sm:text-2xl md:text-4xl font-semibold sm:font-bold mb-3 sm:mb-5'>{albumdata.title} Playlist</h2>
                         <div className='flex gap-3 items-center'>
-                            <img src={assets.spotify_logo} className='size-6' alt="" />
+                            <img src={assets.tunehive_logo} className='size-6' alt="" />
                             <p className='max-sm:text-xs'>{albumdata.description}</p>
                         </div>
                     </div>

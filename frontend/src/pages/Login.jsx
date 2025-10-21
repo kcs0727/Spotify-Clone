@@ -15,9 +15,9 @@ export default function Login() {
 
     return (
         <div className='flex items-center justify-center h-screen'>
-            <div className='bg-black p-4 sm:p-8 rounded-lg w-md max-w-[90vw] shadow-lg shadow-gray-500 border-t-2 border-gray-500/50'>
+            <div className='bg-black p-4 sm:p-8 rounded-lg w-md max-w-[90vw] shadow-lg shadow-sky-500 border-t-2 border-sky-500/50'>
 
-                <h1 className='text-3xl font-bold text-center mb-8'>Login to Spotify</h1>
+                <h1 className='text-3xl font-bold text-center mb-8 text-sky-100'>Login to TuneHive</h1>
 
                 <form onSubmit={handlesubmit} className='flex flex-col justify-between gap-6'>
 
@@ -38,7 +38,7 @@ export default function Login() {
                     </div>
 
                     <div>
-                        <button type='submit' disabled={btnloading} className='w-full bg-green-400 hover:bg-green-600 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{btnloading?"Processing..":"Login"}</button>
+                        <button type='submit' disabled={btnloading} className='w-full bg-sky-300 hover:bg-sky-500 hover:text-white text-black font-semibold py-1 rounded-md my-1 text-lg cursor-pointer'>{btnloading?"Processing..":"Login"}</button>
 
                         <div>Don't have an account?
                             <Link to="/register" className="text-blue-400 underline"> Register</Link>
