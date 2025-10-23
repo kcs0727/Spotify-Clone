@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { UserData } from "./usercontext";
 import axios from "./axios";
+import { useNavigate } from "react-router-dom";
 
 
 const Songcontext = createContext();
@@ -9,7 +10,8 @@ const Songcontext = createContext();
 
 export const SongProvider = ({ children }) => {
 
-    const { isauth } = UserData();
+    const { isauth, user } = UserData();
+    const navigate= useNavigate();
 
     const [loading, setloading] = useState(false);
     const [songs, setsongs] = useState([]);
@@ -140,9 +142,37 @@ export const SongProvider = ({ children }) => {
         }
     }
 
+    async function downloadSong(id, name) {
+        try {
+            if (!user.plan || user.plan === "Free") {
+                toast.error("Please subscribe to download songs");
+                navigate("/premium");
+                return;
+            }
+
+            const { data } = await axios.get(`/api/song/download/${id}`, {
+                responseType: "blob",
+            });
+
+            // Create a temporary link to trigger the download
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `${name}.mp3`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+
+            toast.success("Download started...");
+        }
+        catch (err) {
+            toast.error(err.response?.data?.message || "Failed to download song");
+        }
+    };
 
     return (
-        <Songcontext.Provider value={{ addalbum, addsong, deletesong, fetchsong, albums, songs, loading, isplaying, song, selectedsong, setselectedsong, setisplaying, prevmusic, nextmusic, albumdata, albumsong, fetchalbumsong }}>
+        <Songcontext.Provider value={{ addalbum, addsong, deletesong, fetchsong, albums, songs, loading, isplaying, song, selectedsong, setselectedsong, setisplaying, prevmusic, nextmusic, albumdata, albumsong, fetchalbumsong, downloadSong }}>
             {children}
         </Songcontext.Provider>
     )

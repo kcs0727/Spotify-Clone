@@ -5,13 +5,16 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './context/usercontext.jsx'
 import { SongProvider } from './context/songcontext.jsx'
+import { PaymentProvider } from './context/paymentcontext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
         <SongProvider>
-          <App />
+          <PaymentProvider>
+            <App />
+          </PaymentProvider>
         </SongProvider>
       </UserProvider>
     </BrowserRouter>

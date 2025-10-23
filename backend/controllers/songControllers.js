@@ -3,6 +3,8 @@ import songs from "../models/songs.js";
 import trycatch from "../utils/trycatch.js";
 import getdataurl from "../utils/urlgenerator.js";
 import cloudinary from 'cloudinary';
+import axios from "axios";
+
 
 
 export const createalbum = trycatch(async (req, res) => {
@@ -115,3 +117,17 @@ export const getsong = trycatch(async (req, res) => {
     });
     res.json(song);
 })
+
+export const downloadSong = trycatch(async (req, res) => {
+    const song = await songs.findById(req.params.id);
+    if (!song) return res.status(404).json({
+        message: "Song not found"
+    });
+    
+    const response = await axios.get(song.audio.url, { responseType: "stream" });
+
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Content-Disposition", `attachment; filename="${song.title}.mp3"`);
+
+    response.data.pipe(res);
+});

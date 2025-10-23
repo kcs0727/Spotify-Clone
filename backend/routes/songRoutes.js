@@ -3,7 +3,7 @@ import express from 'express';
 import uploadfile from '../middlewares/multer.js';
 import isauth from '../middlewares/isauth.js';
 
-import { addsong, createalbum, deletesong, getallalbums, getallsongs, getallsongsbyalbum, getsong } from '../controllers/songControllers.js';
+import { addsong, createalbum, deletesong, downloadSong, getallalbums, getallsongs, getallsongsbyalbum, getsong } from '../controllers/songControllers.js';
 import { albumvalidation, songvalidation } from '../middlewares/validation.js';
 
 const router= express.Router();
@@ -21,6 +21,9 @@ router.get("/all", isauth, getallsongs);
 router.get("/album/:id", isauth, getallsongsbyalbum);
 
 router.get("/:id",isauth,getsong);
+
+router.get("/download/:id", isauth, downloadSong);
+
 
 
 export default router;

@@ -8,6 +8,7 @@ import cors from 'cors';
 import connectDB from './models/db.js';
 import userRoutes from './routes/userRoutes.js';
 import songRoutes from './routes/songRoutes.js';
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 
 cloudinary.v2.config({
@@ -29,10 +30,11 @@ app.use(cors({
 
 app.use("/api/user",userRoutes);
 app.use("/api/song",songRoutes);
+app.use("/api/payment",paymentRoutes);
+
 app.get("/",(req,res)=>{
   res.send("it is working");
 })
-
 
 connectDB().then(() => {
     app.listen(port, () => console.log(`Server running at http://localhost:${port}`));

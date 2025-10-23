@@ -45,10 +45,10 @@ export default function Playlist() {
 
 
       <div className='flex mt-6 my-4 pl-1 sm:pl-2 text-[#a7a7a7] items-center'>
-        <p className='w-[50%] sm:w-[35%] pl-5'><b>#</b></p>
-        <p className='w-[33%] sm:w-[25%]'>Artist</p>
-        <p className='w-[35%] hidden sm:block'>Description</p>
-        <p className='w-[17%] sm:w-[10%]'>Actions</p>
+        <p className='w-[50%] sm:w-[33%] pl-5'><b>#</b></p>
+        <p className='w-[30%] sm:w-[25%]'>Artist</p>
+        <p className='w-[33%] hidden sm:block'>Description</p>
+        <p className='w-[20%] sm:w-[14%]'>Actions</p>
       </div>
       <hr className='text-[#a7a7a7]' />
 

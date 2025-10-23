@@ -16,14 +16,20 @@ const schema = new mongoose.Schema({
     playlist: {
         type: [String], default: []
     },
-    verified:{
-        type: Boolean, default:false
+    verified: {
+        type: Boolean, default: false
     },
-    verifyToken: { 
-        type: String 
+    verifyToken: {
+        type: String
     },
     verifyTokenExpiry: {
-        type: Date 
+        type: Date
+    },
+    plan: {
+        type: String, enum: ["Free", "Monthly", "Yearly"], default: "Free",
+    },
+    planExpiry: {
+        type: Date,
     },
 },
     { timestamps: true })

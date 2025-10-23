@@ -20,7 +20,7 @@
   height: 80%;
   width: 150%;
   background: linear-gradient(#00ccff,#5b00f9);
-  animation: rotate 3s linear infinite;
+  animation: rotate 4s linear infinite;
 }
 .logo::after{
   content: '';

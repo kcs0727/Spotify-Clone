@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { FaPlay, FaBookmark, FaRegBookmark, FaPause } from 'react-icons/fa';
+import { FaPlay, FaBookmark, FaRegBookmark, FaPause, FaDownload } from 'react-icons/fa';
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { UserData } from '../context/usercontext';
 import { useEffect } from 'react';
@@ -10,7 +10,7 @@ import { SongData } from '../context/songcontext';
 export default function Songitem({ image, name, desc, id }) {
 
     const { addtoplaylist, user } = UserData();
-    const { selectedsong, setselectedsong, isplaying, setisplaying } = SongData();
+    const { selectedsong, setselectedsong, isplaying, setisplaying, downloadSong } = SongData();
 
     const [showActions, setShowActions] = useState(false);
     const [saved, setsaved] = useState(false);
@@ -41,22 +41,29 @@ export default function Songitem({ image, name, desc, id }) {
         addtoplaylist(id);
     }
 
+    const downloadHandler = () => {
+        downloadSong(id, name);
+    }
+
 
     return (
         <div className='min-w-[140px] md:min-w-[160px] lg:min-w-[180px] px-1 md:px-2 mb-4 rounded-lg cursor-pointer hover:bg-[#ffffff14] hover:scale-95'>
 
             <div className='relative group'>
-                <img src={image} alt="" className='rounded size-[130px] md:size-[150px] lg:size-[160px]' onClick={playHandler}/>
+                <img src={image} alt="" className='rounded size-[130px] md:size-[150px] lg:size-[160px]' onClick={playHandler} />
 
                 <button type="button" className="lg:hidden absolute bottom-1 right-1 bg-black/80 text-white p-1 rounded cursor-pointer" onClick={() => setShowActions(!showActions)}>
                     <HiOutlineDotsVertical size={18} />
                 </button>
 
-                <div className={`absolute bottom-1 right-10 lg:right-2 gap-2 items-center ${showActions? "flex" : "hidden"} lg:group-hover:flex`}>
-                    <button type='button' className='bg-green-400/80 text-black/80 p-2 rounded-full cursor-pointer' onClick={playHandler}>
+                <div className={`absolute bottom-1 right-10 lg:right-2 gap-2 items-center ${showActions ? "flex" : "hidden"} lg:group-hover:flex`}>
+                    <button type='button' className='bg-sky-400/90 text-black/80 p-2 rounded-full cursor-pointer hidden lg:block' onClick={playHandler}>
                         {isplaying && selectedsong == id ? <FaPause /> : <FaPlay />}
                     </button>
-                    <button type='button' className='bg-green-400/80 text-black/80 p-2 rounded-full cursor-pointer' onClick={saveToPlaylistHandler}>
+                    <button type='button' className='bg-sky-400/90 text-black/80 p-2 rounded-full cursor-pointer' onClick={downloadHandler}>
+                        <FaDownload />
+                    </button>
+                    <button type='button' className='bg-sky-400/90 text-black/80 p-2 rounded-full cursor-pointer' onClick={saveToPlaylistHandler}>
                         {saved ? <FaBookmark /> : <FaRegBookmark />}
                     </button>
                 </div>

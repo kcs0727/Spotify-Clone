@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { UserData } from '../context/usercontext';
 import { assets } from '../assets/assets';
 import { HiMenu, HiX } from "react-icons/hi";
-import { LuPanelRightOpen, LuPanelRightClose } from "react-icons/lu";
-
+import { LuPanelRightOpen, LuPanelRightClose} from "react-icons/lu";
+import { GiCrown } from "react-icons/gi";
+import { FaCrown } from "react-icons/fa";
 
 
 export default function Navbar({ sidebar, setsidebar }) {
@@ -37,14 +38,14 @@ export default function Navbar({ sidebar, setsidebar }) {
                 </div>
 
 
-                <div className={`max-md:flex items-center justify-center p-2 cursor-pointer logo ${sidebar?"hidden":"flex"}`}>
+                <div className={`max-md:flex items-center justify-center p-2 cursor-pointer logo ${sidebar ? "hidden" : "flex"}`}>
                     <img src={assets.tunehive} className='h-6 z-2 animate-pulse' alt='' />
                 </div>
 
 
                 <div className='items-center gap-4 hidden md:flex font-bold'>
                     <NavLink to='/premium'>
-                        <p className='px-2 lg:px-4 py-1 bg-sky-100 text-black rounded-2xl cursor-pointer hover:bg-white hover:scale-x-107 '>Explore Premium</p>
+                        <p className='px-2 lg:px-4 py-1 bg-sky-100 text-yellow-700 rounded-2xl cursor-pointer hover:bg-white hover:scale-x-107 flex items-center gap-1'><FaCrown className='text-yellow-700 size-5' /> Explore Premium</p>
                     </NavLink>
                     <NavLink to='/installapp'>
                         <p className='px-2 lg:px-4 py-1 bg-sky-100 text-black rounded-2xl cursor-pointer hover:bg-white hover:scale-x-107 '>Install App</p>
@@ -53,7 +54,13 @@ export default function Navbar({ sidebar, setsidebar }) {
                 </div>
 
 
-                <div className='md:hidden cursor-pointer'>
+                <div className='md:hidden cursor-pointer flex items-center gap-2'>
+                    <NavLink to='/premium'>
+                        <div className='rounded  text-black font-semibold hover:bg-white hover:scale-107'>
+                            <FaCrown className='text-yellow-600 size-6' />
+                        </div>
+                    </NavLink>
+
                     {showOptions ? <HiX className='size-6 text-sky-300' onClick={() => setShowOptions(false)} /> :
                         <HiMenu className='size-6 text-sky-300' onClick={() => setShowOptions(true)} />}
                 </div>
