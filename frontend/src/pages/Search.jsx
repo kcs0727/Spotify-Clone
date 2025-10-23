@@ -31,7 +31,7 @@ export default function Search() {
                 <button type="submit" className="bg-indigo-500 w-32 h-[26px] rounded-md text-sm text-white cursor-pointer">Search</button>
             </div>
 
-            <h1 className='text-xl md:text-2xl font-bold my-3'>Search results...</h1>
+            <h1 className='text-xl md:text-2xl font-bold my-3 text-slate-200'>Search results...</h1>
 
             <div className='flex mt-6 my-4 pl-1 sm:pl-2 text-[#a7a7a7] items-center'>
                 <p className='w-[50%] sm:w-[33%] pl-5'><b>#</b></p>

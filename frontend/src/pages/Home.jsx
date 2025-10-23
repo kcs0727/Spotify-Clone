@@ -23,8 +23,8 @@ export default function Home() {
 
 
   return (
-    <div className='mt-5'>
-      <h1 className='text-xl md:text-2xl font-bold my-3 md:my-5'>Featured Charts</h1>
+    <div className='mt-5 text-slate-200'>
+      <h1 className='text-xl md:text-2xl font-bold my-4 md:my-5'>Featured Charts</h1>
       <div className='flex overflow-auto'>
         {
           albums.map((album, i) => (
@@ -33,7 +33,7 @@ export default function Home() {
         }
       </div>
 
-      <h1 className='text-xl md:text-2xl font-bold my-3 md:my-5'>Today's biggest hits</h1>
+      <h1 className='text-xl md:text-2xl font-bold my-4 md:my-5'>Today's biggest hits</h1>
       <div className='flex overflow-auto'>
         {
           songs.map((song, i) => (
@@ -42,7 +42,7 @@ export default function Home() {
         }
       </div>
 
-      <h1 className='text-xl md:text-2xl font-bold my-3 md:my-5'>Tollywood hits</h1>
+      <h1 className='text-xl md:text-2xl font-bold my-4 md:my-5'>Tollywood hits</h1>
       <div className='flex overflow-auto'>
         {
           tollywoodSongs.map((song, i) => (
@@ -51,7 +51,7 @@ export default function Home() {
         }
       </div>
 
-      <h1 className='text-xl md:text-2xl font-bold my-3 md:my-5'>Bollywood hits</h1>
+      <h1 className='text-xl md:text-2xl font-bold my-4 md:my-5'>Bollywood hits</h1>
       <div className='flex overflow-auto'>
         {
           bollywoodSongs.map((song, i) => (
