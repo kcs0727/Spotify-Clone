@@ -5,15 +5,15 @@ const sendEmail = async (to, name, verifyLink) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: process.env.USER,
-                pass: process.env.PASS,
+                user: process.env.USER_MAIL,
+                pass: process.env.PASS_MAIL,
             },
         });
 
         await transporter.sendMail({
-            from: `"Spotify Clone 🎵" <${process.env.SENDER_EMAIL}>`,
+            from: `"TuneHive 🎵" <${process.env.USER_MAIL}>`,
             to,
-            subject: "Verify your Spotify account",
+            subject: "Verify your TuneHive music streaming account",
 
             //plain text is optional, which is just a fallback, not shown unless HTML fails to load.
             text: `Hello ${name}, \nPlease click the link below to verify your account: \n${verifyLink} \nThis link will expire in 24 hours.`,
