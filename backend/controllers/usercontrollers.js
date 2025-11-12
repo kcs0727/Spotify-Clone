@@ -3,7 +3,7 @@ import users from "../models/users.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
-import sendEmail from "../utils/sendemail.js";
+import { sendEmail, notifyAdmin } from "../utils/sendemail.js";
 
 
 export const registeruser = trycatch(async (req, res) => {
@@ -118,6 +118,7 @@ export const verifyuser = trycatch(async (req, res) => {
     user.verifyTokenExpiry = undefined;
     await user.save();
 
+    await notifyAdmin(user.email, user.name);
 
     const Token = jwt.sign(
         { id: user._id },
